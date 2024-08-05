@@ -6,11 +6,13 @@ def init_rods():
     tens = [0 for i in range(5)]
     hundreds = [0 for i in range(5)]
     thousands = [0 for i in range(5)]
-    return thousands, hundreds, tens, ones
+    ten_thousands = [0 for i in range(5)]
+    return ten_thousands, thousands, hundreds, tens, ones
 
 
 def set_rods(sum):
-    thousands_rod, hundreds_rod, tens_rod, ones_rod = rods
+    ten_thousands_rod, thousands_rod, hundreds_rod, tens_rod, ones_rod = rods
+    ten_thousands_digit = (sum // 10000) % 10
     thousands_digit = (sum // 1000) % 10
     hundreds_digit = (sum // 100) % 10
     tens_digit = (sum // 10) % 10
@@ -27,6 +29,9 @@ def set_rods(sum):
     if thousands_digit >= 5:
         thousands_rod[0] = 1
         thousands_digit -= 5
+    if ten_thousands_digit >= 5:
+        ten_thousands_rod[0] = 1
+        ten_thousands_digit -= 5
     for i in range(1, ones_digit + 1):
         ones_rod[i] = 1
     for i in range(1, tens_digit + 1):
@@ -35,17 +40,21 @@ def set_rods(sum):
         hundreds_rod[i] = 1
     for i in range(1, thousands_digit + 1):
         thousands_rod[i] = 1
+    for i in range(1, ten_thousands_digit + 1):
+        ten_thousands_rod[i] = 1
     return
 
 
 def print_soroban():
-    thousands_rod, hundreds_rod, tens_rod, ones_rod = rods
+    ten_thousands_rod, thousands_rod, hundreds_rod, tens_rod, ones_rod = rods
+    print("●", end="") if (ten_thousands_rod[0]) else print(" ", end="")
     print("●", end="") if (thousands_rod[0]) else print(" ", end="")
     print("●", end="") if (hundreds_rod[0]) else print(" ", end="")
     print("●", end="") if (tens_rod[0]) else print(" ", end="")
     print("●", end="") if (ones_rod[0]) else print(" ", end="")
-    print("\n––––")
+    print("\n–––––")
     for i in range(1, 5):
+        print("●", end="") if (ten_thousands_rod[i]) else print(" ", end="")
         print("●", end="") if (thousands_rod[i]) else print(" ", end="")
         print("●", end="") if (hundreds_rod[i]) else print(" ", end="")
         print("●", end="") if (tens_rod[i]) else print(" ", end="")
@@ -56,7 +65,7 @@ def print_soroban():
 
 if __name__ == "__main__":
     print(
-        "How many digits do you want to add? Enter 1 (eg. 7 + 8), 2 (eg. 47 + 12), or 3 (eg. 347 + 112)"
+        "How many digits do you want to add? Enter 1 (eg. 7 + 8), 2 (eg. 47 + 12), 3 (eg. 347 + 112), or 4 (eg. 2347 + 9112)"
     )
     digits = int(input())
     print("Press 'q' to quit")
