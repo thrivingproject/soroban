@@ -5,11 +5,13 @@ def init_rods():
     thousands = [0 for i in range(5)]
     ten_thousands = [0 for i in range(5)]
     hundred_thousands = [0 for i in range(5)]
-    return hundred_thousands, ten_thousands, thousands, hundreds, tens, ones
+    millions = [0 for i in range(5)]
+    return millions, hundred_thousands, ten_thousands, thousands, hundreds, tens, ones
 
 
 def set_rods(value, rods):
     (
+        millions_rod,
         hundred_thousands_rod,
         ten_thousands_rod,
         thousands_rod,
@@ -17,6 +19,7 @@ def set_rods(value, rods):
         tens_rod,
         ones_rod,
     ) = rods
+    millions_digit = (value // 1000000) % 10
     hundred_thousands_digit = (value // 100000) % 10
     ten_thousands_digit = (value // 10000) % 10
     thousands_digit = (value // 1000) % 10
@@ -41,6 +44,9 @@ def set_rods(value, rods):
     if hundred_thousands_digit >= 5:
         hundred_thousands_rod[0] = 1
         hundred_thousands_digit -= 5
+    if millions_digit >= 5:
+        millions_rod[0] = 1
+        millions_digit -= 5
     for i in range(1, ones_digit + 1):
         ones_rod[i] = 1
     for i in range(1, tens_digit + 1):
@@ -53,11 +59,14 @@ def set_rods(value, rods):
         ten_thousands_rod[i] = 1
     for i in range(1, hundred_thousands_digit + 1):
         hundred_thousands_rod[i] = 1
+    for i in range(1, millions_digit + 1):
+        millions_rod[i] = 1
     return
 
 
 def print_soroban(rods):
     (
+        millions_rod,
         hundred_thousands_rod,
         ten_thousands_rod,
         thousands_rod,
@@ -65,14 +74,16 @@ def print_soroban(rods):
         tens_rod,
         ones_rod,
     ) = rods
+    print("●", end="") if (millions_rod[0]) else print(" ", end="")
     print("●", end="") if (hundred_thousands_rod[0]) else print(" ", end="")
     print("●", end="") if (ten_thousands_rod[0]) else print(" ", end="")
     print("●", end="") if (thousands_rod[0]) else print(" ", end="")
     print("●", end="") if (hundreds_rod[0]) else print(" ", end="")
     print("●", end="") if (tens_rod[0]) else print(" ", end="")
     print("●", end="") if (ones_rod[0]) else print(" ", end="")
-    print("\n––––––")
+    print("\n–––––––")
     for i in range(1, 5):
+        print("●", end="") if (millions_rod[i]) else print(" ", end="")
         print("●", end="") if (hundred_thousands_rod[i]) else print(" ", end="")
         print("●", end="") if (ten_thousands_rod[i]) else print(" ", end="")
         print("●", end="") if (thousands_rod[i]) else print(" ", end="")
@@ -81,3 +92,10 @@ def print_soroban(rods):
         print("●", end="") if (ones_rod[i]) else print(" ", end="")
         print()
     print()
+
+
+def show_soroban():
+    answer = input("Do you want to see the soroban? (y/n) ")
+    if answer == "y":
+        return True
+    return False
